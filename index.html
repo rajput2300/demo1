@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💣 BIRTHDAY CHAOS 🎉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Rain Effect */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* Password Screen */
+        .password-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .terminal {
+            background: #000;
+            border: 3px solid #0f0;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+            animation: glitch 5s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { border-color: #0f0; }
+            25% { border-color: #f0f; }
+            50% { border-color: #0ff; }
+            75% { border-color: #ff0; }
+        }
+
+        .terminal-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .terminal input {
+            width: 100%;
+            background: #000;
+            border: 2px solid #0f0;
+            color: #0f0;
+            padding: 15px;
+            font-size: 1.3em;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .terminal input:focus {
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .terminal button {
+            width: 100%;
+            background: #000;
+            border: 2px solid #0f0;
+            color: #0f0;
+            padding: 15px;
+            font-size: 1.3em;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        .terminal button:hover {
+            background: #0f0;
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 1);
+        }
+
+        .error {
+            color: #f00;
+            text-shadow: 0 0 10px #f00;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeIn 2s;
+        }
+
+        .glitch-text {
+            font-size: 4em;
+            color: #0f0;
+            text-shadow: 0 0 20px #0f0;
+            animation: textGlitch 3s infinite;
+        }
+
+        @keyframes textGlitch {
+            0%, 100% { 
+                text-shadow: 0 0 20px #0f0;
+                color: #0f0;
+            }
+            25% { 
+                text-shadow: -5px 0 20px #f0f;
+                color: #f0f;
+            }
+            50% { 
+                text-shadow: 5px 0 20px #0ff;
+                color: #0ff;
+            }
+            75% { 
+                text-shadow: 0 5px 20px #ff0;
+                color: #ff0;
+            }
+        }
+
+        .countdown-box {
+            background: rgba(0, 20, 0, 0.8);
+            border: 2px solid #0f0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 0 auto 60px;
+            max-width: 800px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .countdown-box h2 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #0ff;
+            text-shadow: 0 0 15px #0ff;
+        }
+
+        .countdown-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: #000;
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 100px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4);
+        }
+
+        .time-unit .number {
+            font-size: 3em;
+            display: block;
+            color: #0f0;
+            text-shadow: 0 0 15px #0f0;
+        }
+
+        .time-unit .label {
+            font-size: 1em;
+            color: #0ff;
+        }
+
+        .mystery-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 60px;
+        }
+
+        .mystery-box {
+            background: rgba(0, 20, 0, 0.8);
+            border: 2px solid #0f0;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mystery-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.6);
+            border-color: #0ff;
+        }
+
+        .mystery-box::before {
+            content: '???';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8em;
+            opacity: 0.1;
+            color: #0f0;
+        }
+
+        .mystery-box h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        .mystery-box .locked {
+            color: #f00;
+            text-shadow: 0 0 10px #f00;
+            animation: lockPulse 2s infinite;
+        }
+
+        @keyframes lockPulse {
+            0%, 100% { transform: scale(1); color: #f00; }
+            50% { transform: scale(1.05); color: #ff0; }
+        }
+
+        .shake-lock {
+            animation: crazyShake 0.2s;
+        }
+
+        .password-input {
+            margin-top: 15px;
+            padding: 10px;
+            background: #000;
+            border: 2px solid #f00;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            display: none;
+        }
+
+        .code-challenge {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #f00;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .math-challenge {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #0ff;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .final-lock {
+            margin-top: 15px;
+            padding: 20px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 3px solid #f0f;
+            display: none;
+            animation: insaneGlitch 0.5s infinite;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #001a00;
+            border: 2px solid #0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0f0, #ff0, #f00);
+            width: 0%;
+            transition: width 0.3s;
+            animation: progressGlow 1s infinite;
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { box-shadow: 0 0 10px #0f0; }
+            50% { box-shadow: 0 0 20px #ff0; }
+        }
+
+        .mystery-content {
+            display: none;
+            animation: fadeIn 1s;
+        }
+
+        .mystery-content p {
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .mystery-content ul {
+            list-style-position: inside;
+            margin-top: 10px;
+        }
+
+        .mystery-content li {
+            margin-bottom: 8px;
+        }
+
+        /* Photo Gallery */
+        .photo-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0, 20, 0, 0.8);
+            border: 2px solid #0f0;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .photo-section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #0ff;
+            text-shadow: 0 0 15px #0ff;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .photo-slot {
+            aspect-ratio: 1;
+            background: #001a00;
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .photo-slot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.6);
+        }
+
+        .photo-label {
+            background: rgba(0, 0, 0, 0.8);
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        /* INSANE Birthday Bomb Modal */
+        .birthday-bomb {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            animation: systemHack 0.1s infinite;
+        }
+
+        @keyframes systemHack {
+            0% { background: #000; transform: rotate(0deg); }
+            10% { background: #f00; transform: rotate(1deg); }
+            20% { background: #ff0; transform: rotate(-1deg); }
+            30% { background: #0f0; transform: rotate(2deg); }
+            40% { background: #0ff; transform: rotate(-2deg); }
+            50% { background: #00f; transform: rotate(1deg); }
+            60% { background: #f0f; transform: rotate(-1deg); }
+            70% { background: #fff; transform: rotate(0deg); }
+            80% { background: #f00; transform: scale(1.02); }
+            90% { background: #000; transform: scale(0.98); }
+            100% { background: #000; transform: rotate(0deg); }
+        }
+
+        .bomb-content {
+            text-align: center;
+            padding: 60px 40px;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+            animation: crazyShake 0.15s infinite;
+        }
+
+        @keyframes crazyShake {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            10% { transform: translate(-20px, -10px) rotate(-5deg) scale(1.1); }
+            20% { transform: translate(20px, 10px) rotate(5deg) scale(0.9); }
+            30% { transform: translate(-15px, 20px) rotate(-3deg) scale(1.05); }
+            40% { transform: translate(15px, -20px) rotate(3deg) scale(0.95); }
+            50% { transform: translate(-20px, 15px) rotate(-4deg) scale(1.08); }
+            60% { transform: translate(20px, -15px) rotate(4deg) scale(0.92); }
+            70% { transform: translate(-10px, -20px) rotate(-2deg) scale(1.06); }
+            80% { transform: translate(10px, 20px) rotate(2deg) scale(0.94); }
+            90% { transform: translate(-5px, -5px) rotate(-1deg) scale(1.03); }
+            100% { transform: translate(5px, 5px) rotate(1deg) scale(0.97); }
+        }
+
+        .bomb-content h1 {
+            font-size: 5em;
+            margin-bottom: 30px;
+            animation: insaneGlitch 0.2s infinite;
+        }
+
+        @keyframes insaneGlitch {
+            0% { 
+                color: #f00; 
+                text-shadow: -10px 0 30px #0ff, 10px 0 30px #ff0;
+                transform: skew(0deg);
+            }
+            20% { 
+                color: #ff0; 
+                text-shadow: 10px 0 30px #f0f, -10px 0 30px #0f0;
+                transform: skew(10deg);
+            }
+            40% { 
+                color: #0f0; 
+                text-shadow: -5px 5px 30px #f00, 5px -5px 30px #00f;
+                transform: skew(-10deg);
+            }
+            60% { 
+                color: #0ff; 
+                text-shadow: 5px 10px 30px #ff0, -5px -10px 30px #f0f;
+                transform: skew(5deg);
+            }
+            80% { 
+                color: #f0f; 
+                text-shadow: -15px 0 40px #0f0, 15px 0 40px #f00;
+                transform: skew(-5deg);
+            }
+            100% { 
+                color: #fff; 
+                text-shadow: 0 0 50px #f00, 0 0 50px #0ff;
+                transform: skew(0deg);
+            }
+        }
+
+        .bomb-content p {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #fff;
+            text-shadow: 0 0 20px #fff;
+            animation: textGlitchCrazy 0.3s infinite;
+        }
+
+        @keyframes textGlitchCrazy {
+            0%, 100% { 
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            25% { 
+                transform: translate(-5px, 5px);
+                opacity: 0.8;
+                color: #f00;
+            }
+            50% { 
+                transform: translate(5px, -5px);
+                opacity: 0.9;
+                color: #0ff;
+            }
+            75% { 
+                transform: translate(-3px, -3px);
+                opacity: 0.85;
+                color: #ff0;
+            }
+        }
+
+        .close-bomb {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f00;
+            border: 2px solid #fff;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2em;
+            cursor: pointer;
+            box-shadow: 0 0 30px #f00;
+            animation: buttonPulse 0.5s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); background: #f00; }
+            50% { transform: scale(1.2) rotate(180deg); background: #0ff; }
+        }
+
+        .hack-alert {
+            position: fixed;
+            font-size: 4em;
+            font-weight: bold;
+            animation: hackAlertMove 2s linear infinite;
+            z-index: 10001;
+            pointer-events: none;
+        }
+
+        @keyframes hackAlertMove {
+            0% { top: -10%; left: -10%; color: #f00; }
+            25% { top: -10%; left: 90%; color: #0ff; }
+            50% { top: 90%; left: 90%; color: #ff0; }
+            75% { top: 90%; left: -10%; color: #0f0; }
+            100% { top: -10%; left: -10%; color: #f00; }
+        }
+
+        .static-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence baseFrequency="0.9" numOctaves="4"/></filter><rect width="100" height="100" filter="url(%23noise)" opacity="0.3"/></svg>');
+            pointer-events: none;
+            z-index: 10002;
+            animation: staticFlicker 0.1s infinite;
+            display: none;
+        }
+
+        @keyframes staticFlicker {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .explosion-particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes particleExplode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .glitch-text { font-size: 2.5em; }
+            .photo-grid { grid-template-columns: repeat(2, 1fr); }
+            .bomb-content h1 { font-size: 3em; }
+            .bomb-content p { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Password Terminal -->
+    <div class="password-screen" id="passwordScreen">
+        <div class="terminal">
+            <div class="terminal-text">
+                &gt; SYSTEM LOCKED<br>
+                &gt; ACCESS CODE REQUIRED<br>
+                &gt; ENTER PASSWORD: <span class="cursor">_</span>
+            </div>
+            <input type="password" id="passwordInput" placeholder="●●●●●●●●" autofocus>
+            <button onclick="hackSystem()">[ ACCESS ]</button>
+            <div class="error" id="errorMsg">&gt; ACCESS DENIED! TRY AGAIN...</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="header">
+            <h1 class="glitch-text">??? MYSTERY ZONE ???</h1>
+            <p style="font-size: 1.5em; color: #0ff; text-shadow: 0 0 10px #0ff;">Something INSANE is about to happen...</p>
+            <div style="margin-top: 40px; padding: 30px; background: rgba(255, 0, 0, 0.1); border: 3px solid #f00; border-radius: 15px; max-width: 700px; margin-left: auto; margin-right: auto; animation: glitch 3s infinite;">
+                <p style="font-size: 1.8em; color: #ff0; text-shadow: 0 0 15px #ff0; margin-bottom: 20px;">⚠️ URGENT MISSION ⚠️</p>
+                <p style="font-size: 1.3em; color: #fff; line-height: 1.6;">
+                    Trushna, this is NOT just a random website! 
+                    <br><br>
+                    <span style="color: #0ff;">💎 Hidden treasures await you below...</span>
+                    <br>
+                    <span style="color: #f0f;">🎁 Secret messages locked in mystery boxes...</span>
+                    <br>
+                    <span style="color: #ff0;">💣 A MASSIVE surprise when the countdown hits ZERO...</span>
+                    <br><br>
+                    <span style="color: #f00; font-size: 1.4em; text-shadow: 0 0 20px #f00;">
+                        🔥 Come back on YOUR BIRTHDAY to witness the ULTIMATE CHAOS! 🔥
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <div class="countdown-box">
+            <h2>⏰ COUNTDOWN TO CHAOS EVENT</h2>
+            <div class="countdown-grid" id="countdown"></div>
+        </div>
+
+        <div class="mystery-boxes">
+            <div class="mystery-box" onclick="unlockBox(1)">
+                <h3>🔒 MYSTERY BOX #1</h3>
+                <p class="locked">[ LOCKED - CLICK TO UNLOCK ]</p>
+                <div class="mystery-content" id="box1">
+                    <p>Dear Trushna,</p>
+                    <p>This is a special message just for you. You've been an amazing best friend, always there through thick and thin. Thank you for all the laughs, tears, and crazy memories!</p>
+                    <p style="margin-top: 15px; color: #0ff;">- Your my best one !!💕</p>
+                </div>
+            </div>
+
+            <div class="mystery-box" onclick="unlockBox(2)">
+                <h3>🔒 MYSTERY BOX #2</h3>
+                <p class="locked">[ LOCKED - CLICK TO UNLOCK ]</p>
+                <div class="mystery-content" id="box2">
+                    <p style="color: #0ff;">Why You're Amazing:</p>
+                    <ul>
+                        <li>🌙 Always there at 3 AM</li>
+                        <li>☕ Best bench partner</li>
+                        <li>😂 funny enough to laugh at your own jokes</li>
+                        <li>✨turns ordinary moments into the best memories</li>
+                        <li>💭 Best advice giver</li>
+                        <li>🧠still explains things like a topper when I get confused</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mystery-box" onclick="unlockBox(3)">
+                <h3>🔒 MYSTERY BOX #3</h3>
+                <p class="locked">[ LOCKED - CLICK TO UNLOCK ]</p>
+                <div class="mystery-content" id="box3">
+                    <p style="color: #0ff;">My Wishes For You:</p>
+                    <ul>
+                        <li>✨ Amazing adventures</li>
+                        <li>💫 Dream success</li>
+                        <li>🌈 Finding love</li>
+                        <li>💖 Endless happiness</li>
+                        <li>🎊 Best year ever</li>
+                        <li>👯 More memories together</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mystery-box" onclick="unlockBox(4)">
+                <h3>🔒 MYSTERY BOX #4</h3>
+                <p class="locked">[ LOCKED - CLICK TO UNLOCK ]</p>
+                <div class="mystery-content" id="box4">
+                    <p>You're not just my best friend - you're my sister from another mister! Your loyalty, humor, and amazing personality make you irreplaceable.</p>
+                    <p style="margin-top: 15px;">The way you always know what to say and make me laugh means everything. You're the friend everyone wishes they had!</p>
+                    <p style="margin-top: 15px; color: #0ff;">Thank you for being YOU! 🌸</p>
+                </div>
+            </div>
+        </div>
+
+            <div class="mystery-box" id="box5-container">
+                <h3>🔐 MYSTERY BOX #5</h3>
+                <p class="locked" onclick="showPasswordChallenge(5)">[ ULTRA LOCKED - CLICK TO START HACKING ]</p>
+                <div class="password-input" id="pass5">
+                    <p style="color: #ff0;">Enter Password Hint: "Best Friend's Nickname"</p>
+                    <input type="text" id="password5" placeholder="Type password..." style="width: 100%; padding: 10px; margin: 10px 0; background: #000; border: 2px solid #0f0; color: #0f0;">
+                    <button onclick="checkPassword(5, 'huggies')" style="padding: 10px 20px; background: #0f0; color: #000; border: none; cursor: pointer;">HACK!</button>
+                </div>
+                <div class="mystery-content" id="box5">
+                    <p style="color: #f0f;">🎭 Secret Confession Time:</p>
+                    <p>I swear I’m more excited for your birthday than you are! The countdown has officially started and I can’t waittt to celebrate you like the absolute queen you are. I have so many surprises, so many plans, and so much chaos ready that you’re going to scream, laugh, and maybe even cry a little. Just wait—your birthday this time is not going to be normal… it’s going to be legendary. Get ready, because something special is on the way and I’m literally bursting with excitement already! 🎉🤭💛🔥!</p>
+                    <p style="margin-top: 15px; color: #0ff;">You're literally the BEST! 💫</p>
+                </div>
+            </div>
+
+            <div class="mystery-box" id="box6-container">
+                <h3>⚡ MYSTERY BOX #6</h3>
+                <p class="locked" onclick="showClickChallenge(6)">[ CLICK 10 TIMES TO BREACH ]</p>
+                <div class="code-challenge" id="click6">
+                    <p style="color: #ff0;">CLICKS: <span id="clickCount">0</span>/10</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="clickProgress"></div>
+                    </div>
+                </div>
+                <div class="mystery-content" id="box6">
+                    <p style="color: #ff0;">🌟 Things I Admire About You:</p>
+                    <ul>
+                        <li>💪 Your incredible strength</li>
+                        <li>🧠 Your brilliant mind</li>
+                        <li>❤️ Your kind heart</li>
+                        <li>✨ Your unique style</li>
+                        <li>🎯 Your determination</li>
+                        <li>🌈 Your positive vibes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mystery-box" id="box7-container">
+                <h3>💎 MYSTERY BOX #7</h3>
+                <p class="locked" onclick="showMathChallenge(7)">[ SOLVE THE CODE TO DECRYPT ]</p>
+                <div class="math-challenge" id="math7">
+                    <p style="color: #0ff;">What's 10000 + 100000?</p>
+                    <input type="number" id="math7input" placeholder="Answer..." style="width: 100%; padding: 10px; margin: 10px 0; background: #000; border: 2px solid #0ff; color: #0ff;">
+                    <button onclick="checkMath(7, 42)" style="padding: 10px 20px; background: #0ff; color: #000; border: none; cursor: pointer;">DECRYPT!</button>
+                </div>
+                <div class="mystery-content" id="box7">
+                    <p style="color: #0ff;">🎁 Special Birthday Promises:</p>
+                    <ul>
+                        <li>🍕 Unlimited food adventures</li>
+                        <li>🎬 More movie marathons</li>
+                        <li>🛍️ Epic shopping trips</li>
+                        <li>📸 Crazy photoshoots</li>
+                        <li>☕ Late night deep talks</li>
+                        <li>🎉 Celebrate every win!</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mystery-box" id="box8-container">
+                <h3>🌟 MYSTERY BOX #8</h3>
+                <p class="locked" onclick="showHoverChallenge(8)">[ HOVER FOR 5 SECONDS TO BYPASS ]</p>
+                <div class="code-challenge" id="hover8" onmouseenter="startHover(8)" onmouseleave="stopHover(8)">
+                    <p style="color: #f0f;">KEEP HOVERING: <span id="hoverCount">0</span>s/5s</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="hoverProgress"></div>
+                    </div>
+                </div>
+                <div class="mystery-content" id="box8">
+                    <p>The best part about our friendship? There are no fake vibes, just pure realness. You accept me for who I am, and I'll always do the same for you!</p>
+                    <p style="margin-top: 15px; color: #f0f;">Here's to many more years of chaos together! 🎊</p>
+                </div>
+            </div>
+
+            <div class="mystery-box" id="box9-container">
+                <h3>💣 ULTIMATE MYSTERY BOX #9</h3>
+                <p class="locked" onclick="showFinalChallenge(9)">[ ⚠️ MAXIMUM CHAOS LOCK - DARE TO OPEN? ⚠️ ]</p>
+                <div class="final-lock" id="final9">
+                    <p style="color: #f00; font-size: 1.2em; margin-bottom: 15px;">🔥 FINAL BOSS CHALLENGE 🔥</p>
+                    <p style="color: #ff0; margin-bottom: 10px;">Task 1: Type "TRUSHNA" below</p>
+                    <input type="text" id="finalTask1" placeholder="Type TRUSHNA..." style="width: 100%; padding: 10px; margin: 10px 0; background: #000; border: 2px solid #f00; color: #f00;">
+                    
+                    <p style="color: #0ff; margin-top: 15px; margin-bottom: 10px;">Task 2: Click this button 20 times!</p>
+                    <button onclick="incrementFinal()" style="padding: 15px; background: #f00; color: #fff; border: none; cursor: pointer; width: 100%; font-size: 1.1em;">
+                        CHAOS CLICKS: <span id="finalClicks">0</span>/20
+                    </button>
+                    <div class="progress-bar" style="margin-top: 10px;">
+                        <div class="progress-fill" id="finalProgress"></div>
+                    </div>
+                    
+                    <button onclick="checkFinalChallenge()" style="padding: 15px; margin-top: 20px; background: #0f0; color: #000; border: none; cursor: pointer; width: 100%; font-size: 1.2em; font-weight: bold;">
+                        💥 UNLEASH THE CHAOS! 💥
+                    </button>
+                </div>
+                <div class="mystery-content" id="box9">
+                    <p style="color: #f00; font-size: 1.3em; text-shadow: 0 0 20px #f00; animation: insaneGlitch 0.3s infinite;">🎉🔥 ULTIMATE BIRTHDAY MESSAGE 🔥🎉</p>
+                    <p style="margin-top: 20px; font-size: 1.1em; color: #ff0;">TRUSHNA, YOU ABSOLUTE BEST!</p>
+                    <p style="margin-top: 15px;">You didn't just unlock a box - you conquered the ULTIMATE CHAOS CHALLENGE! Just like you conquer life every single day!!! <br/>Love you soo much!!! <br/></p>
+                    <p style="margin-top: 15px; color: #0ff;">This year, may you:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>💥 Break all limitations</li>
+                        <li>🚀 Reach impossible heights</li>
+                        <li>✨ Shine brighter than ever</li>
+                        <li>🔥 Set the world on fire</li>
+                        <li>💎 Become unstoppable</li>
+                        <li>🎊 Live your BEST life!</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-size: 1.2em; color: #f0f; text-shadow: 0 0 15px #f0f;">You're not just my best friend - you're my PARTNER IN CRIME, my CHAOS CREATOR, my RIDE OR DIE! 👯‍♀️</p>
+                    <p style="margin-top: 20px; font-size: 1.5em; color: #fff; text-shadow: 0 0 20px #fff;">HAPPY BIRTHDAY TO MY WHITE GHOST! </p>
+                    <p style="margin-top: 15px; font-size: 2em;">🎂🎉🎈🎁💖🔥✨🌟⚡</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSANE Birthday Bomb Modal -->
+    <div class="birthday-bomb" id="birthdayBomb">
+        <div class="static-overlay" id="staticOverlay"></div>
+        <div class="hack-alert" id="hackAlert">⚠️ SYSTEM HACKED ⚠️</div>
+        <div class="bomb-content">
+            <button class="close-bomb" onclick="closeBomb()">×</button>
+            <h1>💣 BIRTHDAY BOMB! 💥</h1>
+            <p>🎂 HAPPY BIRTHDAY TRUSHNAAAAAAA! 🎉</p>
+            <p>The mystery is REVEALED!</p>
+            <p>Today is YOUR special day!</p>
+            <p>May your year be filled with joy, laughter, and endless adventures! 🎊✨</p>
+            <p style="font-size: 3em; margin-top: 30px;">🎈🎁💖🎉🔥</p>
+        </div>
+    </div>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン💣🎉🎂🎁';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        // Password System
+        function hackSystem() {
+            const input = document.getElementById('passwordInput').value;
+            if (input === 'IdontKnow') {
+                document.getElementById('passwordScreen').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') hackSystem();
+        });
+
+        // Unlock Mystery Boxes
+        function unlockBox(num) {
+            const box = document.getElementById('box' + num);
+            const locked = box.previousElementSibling;
+            locked.style.display = 'none';
+            box.style.display = 'block';
+        }
+
+        // Box 5 - Password Challenge
+        function showPasswordChallenge(num) {
+            document.getElementById('pass' + num).style.display = 'block';
+            document.getElementById('box' + num + '-container').querySelector('.locked').style.display = 'none';
+        }
+
+        function checkPassword(num, correctPassword) {
+            const input = document.getElementById('password' + num).value.toLowerCase();
+            if (input === correctPassword) {
+                document.getElementById('pass' + num).style.display = 'none';
+                document.getElementById('box' + num).style.display = 'block';
+            } else {
+                const container = document.getElementById('box' + num + '-container');
+                container.classList.add('shake-lock');
+                setTimeout(() => container.classList.remove('shake-lock'), 500);
+                alert('❌ WRONG PASSWORD! TRY AGAIN!');
+            }
+        }
+
+        // Box 6 - Click Challenge
+        let clickCount = 0;
+        function showClickChallenge(num) {
+            document.getElementById('click' + num).style.display = 'block';
+            document.getElementById('box' + num + '-container').querySelector('.locked').style.display = 'none';
+            document.getElementById('box' + num + '-container').addEventListener('click', function() {
+                clickCount++;
+                document.getElementById('clickCount').textContent = clickCount;
+                document.getElementById('clickProgress').style.width = (clickCount * 10) + '%';
+                if (clickCount >= 10) {
+                    document.getElementById('click' + num).style.display = 'none';
+                    document.getElementById('box' + num).style.display = 'block';
+                }
+            });
+        }
+
+        // Box 7 - Math Challenge
+        function showMathChallenge(num) {
+            document.getElementById('math' + num).style.display = 'block';
+            document.getElementById('box' + num + '-container').querySelector('.locked').style.display = 'none';
+        }
+
+        function checkMath(num, answer) {
+            const input = parseInt(document.getElementById('math' + num + 'input').value);
+            if (input === answer) {
+                document.getElementById('math' + num).style.display = 'none';
+                document.getElementById('box' + num).style.display = 'block';
+            } else {
+                const container = document.getElementById('box' + num + '-container');
+                container.classList.add('shake-lock');
+                setTimeout(() => container.classList.remove('shake-lock'), 500);
+                alert('❌ WRONG ANSWER! TRY AGAIN!');
+            }
+        }
+
+        // Box 8 - Hover Challenge
+        let hoverTimer = null;
+        let hoverSeconds = 0;
+        function showHoverChallenge(num) {
+            document.getElementById('hover' + num).style.display = 'block';
+            document.getElementById('box' + num + '-container').querySelector('.locked').style.display = 'none';
+        }
+
+        function startHover(num) {
+            if (hoverTimer) return;
+            hoverTimer = setInterval(() => {
+                hoverSeconds++;
+                document.getElementById('hoverCount').textContent = hoverSeconds;
+                document.getElementById('hoverProgress').style.width = (hoverSeconds * 20) + '%';
+                if (hoverSeconds >= 5) {
+                    stopHover(num);
+                    document.getElementById('hover' + num).style.display = 'none';
+                    document.getElementById('box' + num).style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function stopHover(num) {
+            if (hoverTimer) {
+                clearInterval(hoverTimer);
+                hoverTimer = null;
+                if (hoverSeconds < 5) {
+                    hoverSeconds = 0;
+                    document.getElementById('hoverCount').textContent = hoverSeconds;
+                    document.getElementById('hoverProgress').style.width = '0%';
+                }
+            }
+        }
+
+        // Box 9 - ULTIMATE CHAOS Challenge
+        let finalClickCount = 0;
+        function showFinalChallenge(num) {
+            document.getElementById('final' + num).style.display = 'block';
+            document.getElementById('box' + num + '-container').querySelector('.locked').style.display = 'none';
+        }
+
+        function incrementFinal() {
+            finalClickCount++;
+            document.getElementById('finalClicks').textContent = finalClickCount;
+            document.getElementById('finalProgress').style.width = (finalClickCount * 5) + '%';
+        }
+
+        function checkFinalChallenge() {
+            const task1 = document.getElementById('finalTask1').value.toUpperCase();
+            
+            if (task1 !== 'TRUSHNA') {
+                alert('❌ Task 1 Failed! Type TRUSHNA correctly!');
+                return;
+            }
+            
+            if (finalClickCount < 20) {
+                alert('❌ Task 2 Failed! You need ' + (20 - finalClickCount) + ' more clicks!');
+                return;
+            }
+            
+            // SUCCESS - MEGA EXPLOSION!
+            document.getElementById('final9').style.display = 'none';
+            document.getElementById('box9').style.display = 'block';
+            
+            // Trigger mini explosion effect
+            createMiniExplosion();
+        }
+
+        function createMiniExplosion() {
+            const colors = ['#f00', '#ff0', '#0f0', '#0ff', '#f0f', '#fff'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'explosion-particle';
+                    const box = document.getElementById('box9-container');
+                    const rect = box.getBoundingClientRect();
+                    particle.style.left = (rect.left + rect.width / 2) + 'px';
+                    particle.style.top = (rect.top + rect.height / 2) + 'px';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.width = (5 + Math.random() * 10) + 'px';
+                    particle.style.height = particle.style.width;
+                    
+                    const angle = (Math.PI * 2 * i) / 50;
+                    const velocity = 100 + Math.random() * 200;
+                    const x = Math.cos(angle) * velocity;
+                    const y = Math.sin(angle) * velocity;
+                    
+                    particle.style.setProperty('--x', x + 'px');
+                    particle.style.setProperty('--y', y + 'px');
+                    particle.style.animation = 'particleExplode 1.5s ease-out forwards';
+                    
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 1500);
+                }, i * 20);
+            }
+        }
+
+        // Countdown Timer
+        function updateCountdown() {
+            const birthday = new Date('2025-12-02T00:00:00');
+            const now = new Date();
+            const diff = birthday - now;
+
+            const countdown = document.getElementById('countdown');
+
+            if (diff <= 0) {
+                countdown.innerHTML = '<div class="time-unit"><span class="number">💥</span><span class="label">IT\'S TIME!</span></div>';
+                triggerBirthdayBomb();
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            countdown.innerHTML = `
+                <div class="time-unit"><span class="number">${days}</span><span class="label">DAYS</span></div>
+                <div class="time-unit"><span class="number">${hours}</span><span class="label">HOURS</span></div>
+                <div class="time-unit"><span class="number">${minutes}</span><span class="label">MINS</span></div>
+                <div class="time-unit"><span class="number">${seconds}</span><span class="label">SECS</span></div>
+            `;
+        }
+
+        // INSANE Birthday Bomb
+        function triggerBirthdayBomb() {
+            const now = new Date();
+            const birthday = new Date('2025-12-02');
+            
+            if (now.getDate() === birthday.getDate() && 
+                now.getMonth() === birthday.getMonth() && 
+                now.getFullYear() === birthday.getFullYear()) {
+                
+                setTimeout(() => {
+                    document.getElementById('birthdayBomb').style.display = 'flex';
+                    document.getElementById('staticOverlay').style.display = 'block';
+                    document.getElementById('hackAlert').style.display = 'block';
+                    createMegaExplosion();
+                }, 2000);
+            }
+        }
+
+        function closeBomb() {
+            document.getElementById('birthdayBomb').style.display = 'none';
+            document.getElementById('staticOverlay').style.display = 'none';
+            document.getElementById('hackAlert').style.display = 'none';
+        }
+
+        // MEGA Explosion Effect
+        function createMegaExplosion() {
+            const colors = ['#f00', '#ff0', '#0f0', '#0ff', '#f0f', '#fff', '#f80', '#08f'];
+            
+            // Create 200 particles for massive explosion
+            for (let i = 0; i < 200; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'explosion-particle';
+                    particle.style.left = '50%';
+                    particle.style.top = '50%';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.width = (5 + Math.random() * 15) + 'px';
+                    particle.style.height = particle.style.width;
+                    
+                    const angle = (Math.PI * 2 * i) / 200;
+                    const velocity = 150 + Math.random() * 400;
+                    const x = Math.cos(angle) * velocity;
+                    const y = Math.sin(angle) * velocity;
+                    
+                    particle.style.setProperty('--x', x + 'px');
+                    particle.style.setProperty('--y', y + 'px');
+                    particle.style.animation = 'particleExplode ' + (1.5 + Math.random()) + 's ease-out forwards';
+                    
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 3000);
+                }, i * 5);
+            }
+
+            // Add secondary explosion wave
+            setTimeout(() => {
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className = 'explosion-particle';
+                        particle.style.left = '50%';
+                        particle.style.top = '50%';
+                        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                        particle.style.width = (8 + Math.random() * 20) + 'px';
+                        particle.style.height = particle.style.width;
+                        
+                        const angle = (Math.PI * 2 * i) / 100;
+                        const velocity = 250 + Math.random() * 350;
+                        const x = Math.cos(angle) * velocity;
+                        const y = Math.sin(angle) * velocity;
+                        
+                        particle.style.setProperty('--x', x + 'px');
+                        particle.style.setProperty('--y', y + 'px');
+                        particle.style.animation = 'particleExplode 2s ease-out forwards';
+                        
+                        document.body.appendChild(particle);
+                        setTimeout(() => particle.remove(), 2500);
+                    }, i * 8);
+                }
+            }, 500);
+        }
+
+        // SECRET KEYBOARD SHORTCUT - Only you know this!
+        let secretKeys = [];
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'B') {
+                e.preventDefault();
+                document.getElementById('birthdayBomb').style.display = 'flex';
+                document.getElementById('staticOverlay').style.display = 'block';
+                document.getElementById('hackAlert').style.display = 'block';
+                createMegaExplosion();
+            }
+        });
+
+        // Initialize
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        // Check on page load if it's the birthday - AUTOMATIC on Dec 2nd
+        window.addEventListener('load', () => {
+            triggerBirthdayBomb();
+        });
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
